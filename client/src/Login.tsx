@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
+import axios from 'axios';
 import queryString from 'query-string';
 import logo from './logo.svg';
 
 const Login = () => {
   const location = useLocation();
+  const history = useHistory();
 
   // Facebook
   const facebookParams = {
@@ -19,11 +21,19 @@ const Login = () => {
   const facebookRequestUri = `https://www.facebook.com/v6.0/dialog/oauth?${queryString.stringify(facebookParams)}`;
 
   useEffect(() => {
-    // const urlParams = queryString.parse(window.location.search);
     const urlParams = queryString.parse(location.search);
     const { code } = urlParams;
-    console.log(code, '----------');
-    // send request to server.
+    if (code) {
+      (async function authenticateFacebook() {
+        const url = `http://localhost:7000/api/account/authentication/facebook?authorizationCode=${code}`
+        const { data } = await axios.get(url);
+        if (data === 'authenticated') {
+          history.push('/');
+        } else {
+          history.push('/auth');
+        }
+      })()
+    }
   }, [location.search]);
 
   return (
