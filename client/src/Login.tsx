@@ -16,7 +16,7 @@ const Login = () => {
     auth_type: 'rerequest',
     display: 'popup',
   };
-  const facebookRequestUri = `https://www.facebook.com/v5.0/dialog/oauth?${queryString.stringify(facebookParams)}`;
+  const facebookRequestUri = `https://www.facebook.com/v6.0/dialog/oauth?${queryString.stringify(facebookParams)}`;
 
   useEffect(() => {
     // const urlParams = queryString.parse(window.location.search);

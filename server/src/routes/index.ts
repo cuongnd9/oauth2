@@ -6,6 +6,7 @@ import Boom from '@hapi/boom';
 import { errors } from 'celebrate';
 import { handleError } from '../components';
 import catRoute from './cat.route';
+import accountRoute from './account.route';
 
 const router = express.Router();
 
@@ -19,6 +20,7 @@ router.use(logger('dev'));
 
 // Routes
 router.use('/cat', catRoute);
+router.use('/account', accountRoute);
 // 404 not found.
 router.use((req, res, next) => {
   next(Boom.notFound('API not found'));
