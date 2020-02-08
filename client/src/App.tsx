@@ -9,6 +9,7 @@ const App = () => {
       <Switch>
         <Route exact path='/' render={() => <div className="App">
           <header className="App-header">
+            <h3>Home</h3>
             <Link
               className="App-button"
               to="/auth"
