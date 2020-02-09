@@ -11,7 +11,6 @@ const Login = () => {
   // Facebook
   const facebookParams = {
     client_id: '470273657002952',
-    // redirect_uri: 'https://justoauth2.herokuapp.com/auth/facebook',
     redirect_uri: 'http://localhost:3000/auth/facebook',
     scope: ['email', 'user_friends'].join(','),
     response_type: 'code',
@@ -25,7 +24,11 @@ const Login = () => {
     const { code } = urlParams;
     if (code) {
       (async function authenticateFacebook() {
-        const url = `http://localhost:7000/api/account/authentication/facebook?authorizationCode=${code}`
+        const params = {
+          authorizationCode: code,
+          redirectUri: `${window.location.origin}${location.pathname}`
+        };
+        const url = `http://localhost:7000/api/account/authentication/facebook?${queryString.stringify(params)}`
         const { data } = await axios.get(url);
         if (data === 'authenticated') {
           history.push('/');
