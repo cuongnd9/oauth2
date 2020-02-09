@@ -12,6 +12,7 @@ router.get(
   celebrate({
     query: {
       authorizationCode: Joi.string().required(),
+      redirectUri: Joi.string().required()
     }
   }),
   withController(controller.authenticateFacebook),

@@ -2,11 +2,11 @@ import AccountEntity from "../entities/account.entity";
 import { request } from "../components";
 import config from "../components/config";
 
-function getFacebookAccessToken(authorizationCode: string) {
+function getFacebookAccessToken(authorizationCode: string, redirectUri: string) {
   const facebookParams = {
     client_id: config.facebook.clientId,
-    redirect_uri: config.facebook.redirectUri,
     client_secret: config.facebook.clientSecret,
+    redirect_uri: redirectUri,
     code: authorizationCode
   };
   const url = 'https://graph.facebook.com/v6.0/oauth/access_token';
@@ -25,8 +25,8 @@ function getFacebookUserData(accessToken: string) {
   })
 }
 
-async function authenticateFacebook({ authorizationCode }: { authorizationCode: string }) {
-  const { access_token: accessToken } = await getFacebookAccessToken(authorizationCode);
+async function authenticateFacebook({ authorizationCode, redirectUri }: { authorizationCode: string; redirectUri: string }) {
+  const { access_token: accessToken } = await getFacebookAccessToken(authorizationCode, redirectUri);
   const userData = await getFacebookUserData(accessToken);
   const existsAccount = await AccountEntity.findOne({ facebook: userData.id, email: userData.email });
   if (existsAccount) {
